@@ -10,7 +10,13 @@
         >
             <div class="mx-8 bg-white rounded shadow p-3">
                 <div class="text-sm text-gray-500">
-                    Mise en ligne par {{ course.owner.name }}
+                    Mise en ligne par {{ course.owner.name }} -
+                    <span class="text-gray-500 text-sm">
+                        {{ course.participants }} participant<span
+                            v-if="parseInt(course.participants) > 1"
+                            >s</span
+                        >
+                    </span>
                 </div>
 
                 <div class="flex justify-between items-center">

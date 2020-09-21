@@ -67,4 +67,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Course::class);
     }
+
+    /**
+     * Relaton * à * : Liste des épisodes marqué comme "vu" par l'utilisateur
+     */
+    public function watchedEpisodes()
+    {
+        return $this->belongsToMany(Episode::class, 'completions', 'user_id', 'episode_id');
+    }
 }
