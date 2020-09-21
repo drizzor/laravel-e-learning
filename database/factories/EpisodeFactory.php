@@ -27,7 +27,7 @@ class EpisodeFactory extends Factory
             'course_id' => Course::all()->random()->id,
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(3, true),
-            'video_url' => 'mavideo.com/' . rand(10, 255),
+            'video_url' => 'https://www.youtube.com/embed/wnhvanMdx4s',
         ];
     }
 }

@@ -18,8 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/courses', [CoursesController::class, 'index'])->name('courses');
+Route::get('/courses', [CoursesController::class, 'index'])->name('courses.index');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+/** Route demandant à être connecté */
+Route::group(['auth:sanctum', 'verified'], function () {
+    Route::get('/courses/{id}', [CoursesController::class, 'show'])->name('courses.show');
+
+    Route::get('/dashboard', function () {
+        return Inertia\Inertia::render('Dashboard');
+    })->name('dashboard');
+});
