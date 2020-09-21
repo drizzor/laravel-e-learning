@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Inertia\Inertia;
+use App\Models\Course;
+use Illuminate\Http\Request;
+
+class CoursesController extends Controller
+{
+    public function index()
+    {
+        $courses = Course::all();
+
+        return Inertia::render('Courses/Index', [
+            'courses' => $courses
+        ]);
+    }
+}
