@@ -36,6 +36,8 @@ class CoursesController extends Controller
 
         $watched = auth()->user()->watchedEpisodes;
 
+        // dd($course->id);
+
         return Inertia::render('Courses/Show', [
             'course' => $course,
             'watched' => $watched
