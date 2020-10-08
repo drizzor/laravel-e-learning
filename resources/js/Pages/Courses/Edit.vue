@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Dashboard
+        Modification de {{ courseData.title }}
       </h2>
     </template>
 
@@ -33,7 +33,7 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="title"
                 type="text"
-                v-model="form.title"
+                v-model="courseData.title"
               />
               <div v-if="$page.errors.title">{{ $page.errors.title[0] }}</div>
             </div>
@@ -49,7 +49,7 @@
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="description"
                 type="text"
-                v-model="form.description"
+                v-model="courseData.description"
               ></textarea>
               <div v-if="$page.errors.description">
                 {{ $page.errors.description[0] }}
@@ -58,7 +58,10 @@
 
             <div class="mb-4">
               <h2 class="text-2xl">Episodes de la formation</h2>
-              <div v-for="(episode, index) in form.episodes" v-bind:key="index">
+              <div
+                v-for="(episode, index) in courseData.episodes"
+                v-bind:key="index"
+              >
                 <label
                   class="block text-gray-700 text-sm font-bold mb-2"
                   :for="'title-' + index"
@@ -69,7 +72,7 @@
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   :id="'title-' + index"
                   type="text"
-                  v-model="form.episodes[index].title"
+                  v-model="courseData.episodes[index].title"
                 />
                 <div v-if="$page.errors['episodes.' + index + '.title']">
                   {{ $page.errors["episodes." + index + ".title"][0] }}
@@ -85,7 +88,7 @@
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   :id="'description-' + index"
                   type="text"
-                  v-model="form.episodes[index].description"
+                  v-model="courseData.episodes[index].description"
                 ></textarea>
                 <div v-if="$page.errors['episodes.' + index + '.description']">
                   {{ $page.errors["episodes." + index + ".description"][0] }}
@@ -101,7 +104,7 @@
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
                   :id="'video_url-' + index"
                   type="text"
-                  v-model="form.episodes[index].video_url"
+                  v-model="courseData.episodes[index].video_url"
                 />
                 <div v-if="$page.errors['episodes.' + index + '.video_url']">
                   {{ $page.errors["episodes." + index + ".video_url"][0] }}
@@ -113,7 +116,7 @@
               <button
                 class="py-2 px-4 bg-green-600 rounded my-1 text-white block mr-1"
                 @click.prevent="add"
-                v-if="form.episodes.length < 15"
+                v-if="courseData.episodes.length < 15"
               >
                 <i class="fas fa-plus"></i>
               </button>
@@ -121,7 +124,7 @@
               <button
                 class="py-2 px-4 bg-red-600 rounded my-1 text-white block"
                 @click.prevent="remove"
-                v-if="form.episodes.length > 1"
+                v-if="courseData.episodes.length > 1"
               >
                 <i class="fas fa-minus"></i>
               </button>
@@ -131,7 +134,7 @@
               class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Créer ma formation
+              Modifier ma formation
             </button>
           </form>
         </div>
@@ -141,36 +144,36 @@
 </template>
 
 <script>
-import AppLayout from "./../Layouts/AppLayout";
+import AppLayout from "./../../Layouts/AppLayout";
 
 export default {
   components: {
     AppLayout,
   },
 
+  props: ["course"],
+
   data() {
     return {
-      form: {
-        title: null,
-        description: null,
-        episodes: [{ title: null, description: null, video_url: null }],
-      },
+      courseData: this.course,
     };
   },
 
   methods: {
     submit() {
-      this.$inertia.post("/courses", this.form);
+      this.$inertia.put("/courses/" + this.courseData.id, this.courseData);
     },
+
     add() {
-      this.form.episodes.push({
+      this.courseData.episodes.push({
         title: null,
         description: null,
         video_url: null,
       });
     },
+
     remove() {
-      this.form.episodes.pop();
+      this.courseData.episodes.pop();
     },
   },
 };

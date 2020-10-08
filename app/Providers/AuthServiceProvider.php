@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model\Course' => 'App\Policies\CoursePolicy',
     ];
 
     /**
@@ -25,6 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Une gate qui va me permettre par la suite d'afficher ou non le bouton edit sur la page Index
+        Gate::define('update-course', function ($course) {
+            return $course->user_id === auth()->user()->id;
+        });
     }
 }
