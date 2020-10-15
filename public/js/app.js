@@ -3678,6 +3678,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3689,8 +3691,13 @@ __webpack_require__.r(__webpack_exports__);
       courseList: this.courses
     };
   },
-  mounted: function mounted() {
-    console.log(this.courseList);
+  methods: {
+    convert: function convert(timestamps) {
+      var hours = Math.floor(timestamps / 3600);
+      var minutes = Math.floor(timestamps / 60) - hours / 60;
+      var seconds = timestamps % 60;
+      return hours.toString().padStart(2, 0) + ':' + minutes.toString().padStart(2, 0) + ':' + seconds.toString().padStart(2, 0);
+    }
   }
 });
 
@@ -27153,11 +27160,11 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "flex justify-between items-center" }, [
-              _c("div", { staticClass: "text-3xl" }, [
+              _c("h1", { staticClass: "text-3xl" }, [
                 _vm._v(_vm._s(course.title))
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "text-sm text-gray-500" }, [
+              _c("span", { staticClass: "text-sm text-gray-500" }, [
                 _vm._v(
                   "\n          " +
                     _vm._s(course.episodes_count) +
@@ -27166,7 +27173,12 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "text-sm text-gray-500" }, [
+            _c("span", { staticClass: "font-semibold text-sm text-gray-500" }, [
+              _c("i", { staticClass: "far fa-clock" }),
+              _vm._v(" " + _vm._s(_vm.convert(course.total_duration)))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-sm text-gray-500 mt-2" }, [
               _vm._v("\n        " + _vm._s(course.description) + "\n      ")
             ]),
             _vm._v(" "),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Course;
 use App\Models\Episode;
+use App\Youtube\YoutubeServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -12,20 +13,23 @@ use Illuminate\Support\Facades\Redirect;
 class CoursesController extends Controller
 {
     public function index()
-    {
-
+    {      
         $courses = Course::with('owner')->select('courses.*', DB::raw(
             '(SELECT COUNT(DISTINCT(user_id))
             FROM completions
             INNER JOIN episodes ON completions.episode_id = episodes.id
             WHERE episodes.course_id = courses.id
             ) AS participants'
-        ))->withCount('episodes')->latest()->get();
+        ))->addSelect(DB::raw(
+            '(SELECT SUM(duration)
+            FROM episodes
+            WHERE episodes.course_id = courses.id
+            ) AS total_duration'
+        ))
+        ->withCount('episodes')->latest()->get();
 
         // With directement intégré dans le model
         // $courses = Course::all();
-
-        // dd($courses);
 
         return Inertia::render('Courses/Index', [
             'courses' => $courses
@@ -49,7 +53,7 @@ class CoursesController extends Controller
     /**
      * Enregistre un nouveau cours dans la BDD
      */
-    public function store(Request $request)
+    public function store(Request $request, YoutubeServices $ytb)
     {
         $request->validate([
             'title' => 'required',
@@ -66,6 +70,7 @@ class CoursesController extends Controller
         // Récupération des épisodes
         foreach ($request->input('episodes') as $episode) {
             $episode['course_id'] = $course->id;
+            $episode['duration'] = $ytb->handleYoutubeVideoDuration($episode['video_url']);
             Episode::create($episode);
         }
 

@@ -21,13 +21,15 @@
         </div>
 
         <div class="flex justify-between items-center">
-          <div class="text-3xl">{{ course.title }}</div>
-          <div class="text-sm text-gray-500">
+          <h1 class="text-3xl">{{ course.title }}</h1>          
+          <span class="text-sm text-gray-500">
             {{ course.episodes_count }} épisodes
-          </div>
+          </span>
         </div>
 
-        <div class="text-sm text-gray-500">
+        <span class="font-semibold text-sm text-gray-500"><i class="far fa-clock"></i> {{ convert(course.total_duration) }}</span>
+
+        <div class="text-sm text-gray-500 mt-2">
           {{ course.description }}
         </div>
 
@@ -66,8 +68,14 @@ export default {
     };
   },
 
-  mounted() {
-    console.log(this.courseList);
-  },
+  methods: {
+    convert(timestamps) {
+      let hours = Math.floor(timestamps / 3600);
+      let minutes = Math.floor((timestamps / 60)) - (hours / 60);
+      let seconds = timestamps % 60;
+
+      return hours.toString().padStart(2,0) + ':' + minutes.toString().padStart(2,0) + ':' + seconds.toString().padStart(2,0);
+    }
+  }
 };
 </script>
