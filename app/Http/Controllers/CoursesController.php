@@ -26,7 +26,7 @@ class CoursesController extends Controller
             WHERE episodes.course_id = courses.id
             ) AS total_duration'
         ))
-        ->withCount('episodes')->latest()->get();
+        ->withCount('episodes')->latest()->paginate(5);
 
         // With directement intégré dans le model
         // $courses = Course::all();

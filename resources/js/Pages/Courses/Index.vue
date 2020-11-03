@@ -8,7 +8,7 @@
     >
       {{ $page.flash.success }}
     </div>
-    <div class="py-6" v-for="course in this.courseList" v-bind:key="course.id">
+    <div class="py-6" v-for="course in this.courseList.data" v-bind:key="course.id">
       <div class="mx-8 bg-white rounded shadow p-3">
         <div class="text-sm text-gray-500">
           Mise en ligne par {{ course.owner.name }} -
@@ -49,6 +49,16 @@
         </div>
       </div>
     </div>
+
+    <div class="flex justify-center">
+      <inertia-link :href="link.url" v-for="link in courseList.links" v-bind:key="link.label" class="text-indigo-700 border-gray-500 p-5">
+        <span :class="{ 'text-red-700' : link.active,  'text-transparent' : link.url === null }">
+          {{ link.label }}
+        </span>
+      </inertia-link>
+    </div>
+    
+
   </app-layout>
 </template>
 

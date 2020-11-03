@@ -3680,6 +3680,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -27140,7 +27150,7 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm._l(this.courseList, function(course) {
+      _vm._l(this.courseList.data, function(course) {
         return _c("div", { key: course.id, staticClass: "py-6" }, [
           _c("div", { staticClass: "mx-8 bg-white rounded shadow p-3" }, [
             _c("div", { staticClass: "text-sm text-gray-500" }, [
@@ -27207,7 +27217,35 @@ var render = function() {
             ])
           ])
         ])
-      })
+      }),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "flex justify-center" },
+        _vm._l(_vm.courseList.links, function(link) {
+          return _c(
+            "inertia-link",
+            {
+              key: link.label,
+              staticClass: "text-indigo-700 border-gray-500 p-5",
+              attrs: { href: link.url }
+            },
+            [
+              _c(
+                "span",
+                {
+                  class: {
+                    "text-red-700": link.active,
+                    "text-transparent": link.url === null
+                  }
+                },
+                [_vm._v("\n        " + _vm._s(link.label) + "\n      ")]
+              )
+            ]
+          )
+        }),
+        1
+      )
     ],
     2
   )
